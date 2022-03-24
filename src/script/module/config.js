@@ -80,6 +80,7 @@ export var config = {
                 end: 100, // 结束记录数
             },
         },
+        resultLocation: 'after',  // 查询结果块放在最前面还是最后面。 'after': 最后面，'before': 最前面
         maxlen: 64, // 查询结果每个字段最大长度
         maxrow: 3, // 查询结果每个字段最大行数
         limit: 'row', // 查询结果字段限制, (null 为不限制, 'len' 为限制长度, 'row' 为限制行数)

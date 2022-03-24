@@ -263,7 +263,12 @@ export async function widgetBlock(data) {
 
 export async function tableBlock(data) {
     // 将查询结果渲染到页面中
-    let next_block = data.node.nextElementSibling;
+    var next_block;
+    if (data.config.query.resultLocation === "before") {
+        next_block = data.node.previousElementSibling.previousElementSibling;
+    } else {
+        next_block = data.node.nextElementSibling;
+    }
     // console.log(next_block);
 
     if (
@@ -282,10 +287,38 @@ export async function tableBlock(data) {
     } else {
         // 若下一节点无查询结果
         // 创建查询结果节点
-        insertBlock(data.id, "markdown", data.markdown).then((block) => {
-            if (block == null) return -2;
-            data.next_id = block[0].doOperations[0].id;
-        });
+
+        if (data.config.query.resultLocation === "before") {
+            // 在 SQL Block 前面创建
+            let sql_block = data.node.previousElementSibling;
+
+            // 确认 SQL Block 存在
+            if (sql_block.getAttribute("custom-type") ==
+                data.config.query.attribute.code &&
+                sql_block.dataset.type == "NodeCodeBlock") {
+
+                    let id = next_block ?
+                        next_block.getAttribute("data-node-id") :
+                        (
+                            data.node.parentElement.dataset.nodeId ||
+                            data.node.parentElement.parentElement.querySelector("div[data-node-id]").dataset.nodeId
+                        );
+                    let insertBlockOp = next_block ? insertBlock : prependBlock;
+
+                    insertBlockOp(id, "markdown", data.markdown).then((block) => {
+                        if (block == null) return -3;
+                        data.next_id = block[0].doOperations[0].id;
+                    });
+            } else {
+                return -4;
+            }
+        } else {
+            // 在 SQL Block 后面创建
+            insertBlock(data.id, "markdown", data.markdown).then((block) => {
+                if (block == null) return -2;
+                data.next_id = block[0].doOperations[0].id;
+            });
+        }
     }
     return 0;
 }
