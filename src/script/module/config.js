@@ -59,6 +59,7 @@ export var config = {
             mark: '__mark__', // 该字段渲染为标记
             math: '__math__', // 该字段渲染为公式
             strong: '__strong__', // 该字段渲染为粗体
+            hidden: '__hidden__', // 不显示此字段，仅用于数据查询
         },
         attribute: { // 块属性
             code: 'query-code', // 查询代码块

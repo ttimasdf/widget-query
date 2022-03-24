@@ -147,6 +147,8 @@ export async function widgetBlock(data) {
         }
         for (let field of data.config.query.fields) {
             // 根据自定义字段列表，构造表头
+            if (field.startsWith(data.config.query.prefix.hidden))
+                continue;
             header.push(` ${field}${data.config.query.style.column[field]} |`);
             align.push(` ${data.config.query.style.align[field]} |`);
         }
@@ -182,6 +184,8 @@ export async function widgetBlock(data) {
                 }
                 for (let field of data.config.query.fields) {
                     // 根据自定义字段列表，构造表格
+                    if (field.startsWith(data.config.query.prefix.hidden))
+                        continue;
                     row_markdown.push(` ${data.config.query.handler[field](row, ial)} |`);
                 }
 
@@ -205,6 +209,8 @@ export async function widgetBlock(data) {
                 align.push(" -: |");
             }
             for (var key of keys) {
+                if (key.startsWith(data.config.query.prefix.hidden))
+                    continue;
                 header.push(` ${data.config.query.default.name(key)}${data.config.query.default.style.column} |`);
                 align.push(` ${data.config.query.default.style.align} |`);
                 renderer[key] = data.config.query.default.handler(key);
@@ -223,7 +229,9 @@ export async function widgetBlock(data) {
                         row_markdown.push(`${index} |`);
                     }
                     for (var key of keys) {
-                        if (row[key] == "" || row[key] == null || row[key] == undefined) {
+                        if (key.startsWith(data.config.query.prefix.hidden)) {
+                            continue;
+                        } else if (row[key] == "" || row[key] == null || row[key] == undefined) {
                             row_markdown.push(` |`);
                         } else {
                             row_markdown.push(` ${renderer[key](row, key)} |`);
