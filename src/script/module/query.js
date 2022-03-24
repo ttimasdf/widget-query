@@ -125,9 +125,10 @@ export async function widgetBlock(data) {
     // await setBlockAttrs(data.id, { 'custom-sql': data.sql });
     if (data.config.query.template.enable) {
         let RealSql = await data.config.query.template.handler(data);
+        console.log("SQL after substitution:", RealSql);
         data.rows = await sql(RealSql);
     } else data.rows = await sql(data.sql);
-    // console.log(data.rows);
+    console.log("Returned rows:", data.rows);
 
     if (data.rows == null) {
         // error: SQL 语句错误
