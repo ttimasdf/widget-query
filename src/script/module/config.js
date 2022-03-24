@@ -144,6 +144,7 @@ export var config = {
                 align: ':-',
             },
         },
+        withIndex: false,
         fields: [ // 需渲染的 blocks 表的字段, 顺序分先后
             'type', // 内容块类型，参考((20210210103523-ombf290 "类型字段"))
             // 'content', // 去除了 Markdown 标记符的文本
