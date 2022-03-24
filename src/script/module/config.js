@@ -15,7 +15,7 @@ import {
 
 import {
     templateParse
-} from './../utils/templateParser.js'
+} from './../utils/templateParser.js';
 
 export var config = {
     token: '', // API token, 无需填写
@@ -415,13 +415,5 @@ export var config = {
     },
 };
 
-try {
-    let custom = await import('/widgets/custom.js');
-    if (custom.config != null) {
-        config = merge(config, custom.config);
-    }
-} catch (err) {
-    console.log(err);
-} finally {
-    console.log(config);
-}
+window.query_config = config;
+console.log(config);
